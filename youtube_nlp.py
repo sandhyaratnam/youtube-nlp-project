@@ -1,4 +1,10 @@
-from apiclient.discovery import build
+import sys
+from youtube_transcript_api import YouTubeTranscriptApi
 
-api_key='AIzaSyAwpOL-0Yj6dmJFQ2Mzo176XfFoN6PV-K4'
-youtube = build('youtube', 'v3', developerKey=api_key)
+video_ids = "mkF7Ep6gygQ"
+script = YouTubeTranscriptApi.get_transcript(video_ids)
+print(script)
+
+with open('sample_caption.txt',"w") as filehandle:
+    for listitem in script:
+        filehandle.write(listitem.get('text')+" ")
