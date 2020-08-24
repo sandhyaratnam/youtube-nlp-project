@@ -3,14 +3,19 @@ import io
 import sys
 import re
 import string
+
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
+import matplotlib.pyplot as plt
 
+from wordcloud import WordCloud, STOPWORDS
 from youtube_transcript_api import YouTubeTranscriptApi
 from nltk.probability import FreqDist
 from nltk.corpus import stopwords 
 from nltk.tokenize import word_tokenize 
+from nltk.collocations import *
+from nltk import bigrams
 
 scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
 # scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
@@ -109,23 +114,54 @@ def clean_caption():
     
     word_tokens = word_tokenize(raw_text)
     stop_words = set(stopwords.words('english'))
+    stop_words_extra = ['gon', 'na', 'im']
+    for i in range(len(stop_words_extra)):
+        stop_words.add(stop_words_extra[i])
     filtered_sentence = [w for w in word_tokens if not w in stop_words]
 
-    fdist = FreqDist(filtered_sentence)
-    print(fdist.most_common(50))
     
     clean_file = open('clean_caption.txt', 'w')
     for each in filtered_sentence:
         clean_file.write(each + " ")
     
+
     unclean_file.close()
     clean_file.close()
+
+def distribution():
+    f = open('clean_caption.txt','r')
+
+    raw = f.read()
+
+    tokens = word_tokenize(raw)
+
+    #Create your bigrams
+    bgs = bigrams(tokens)
+
+    #compute frequency distribution for all the bigrams in the text
+    fdist = FreqDist(bgs)
+    for k,v in fdist.items():
+        print (k,v)
+
+
+def wordcloud():
+    clean_file = open('clean_caption.txt', 'r')
+
+    cloud = WordCloud().generate(clean_file.read())
+    plt.figure(figsize=(8, 8), facecolor=None)
+    plt.imshow(cloud, interpolation="bilinear")
+    plt.axis("off")
+    plt.tight_layout(pad=0)
+    plt.show()
 
     
 def main():
     vid_ids = get_vidids_from_channel("https://www.youtube.com/channel/UCbAwSkqJ1W_Eg7wr3cp5BUA")
     get_transcript_from_vidids(vid_ids)
     clean_caption()
+    distribution()
+    wordcloud()
+
 #     get_vidids_from_channel("https://www.youtube.com/channel/UCG7RoGLCkUT7kauOBCRmVEg")
 #     get_vidids_from_channel("https://www.youtube.com/channel/UCGCVyTWogzQ4D170BLy2Arw")
 
