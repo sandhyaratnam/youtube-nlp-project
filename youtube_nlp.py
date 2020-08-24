@@ -8,6 +8,9 @@ import googleapiclient.discovery
 import googleapiclient.errors
 
 from youtube_transcript_api import YouTubeTranscriptApi
+from nltk.probability import FreqDist
+from nltk.corpus import stopwords 
+from nltk.tokenize import word_tokenize 
 
 scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
 # scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
@@ -51,7 +54,7 @@ def get_vidids_from_channel(url):
     # retrieve a list of video ids from upload playlist
     request = youtube.playlistItems().list(
         part="contentDetails",
-        maxResults=50,
+        maxResults=10,
         playlistId=upload_playlist_id
     )
     response = request.execute()
@@ -66,7 +69,7 @@ def get_vidids_from_channel(url):
 
 # method to get transcript from video ids
 # params: video_ids - a list of video ids
-# TODO return type?
+# the data being written into sample_caption is clean
 def get_transcript_from_vidids(video_ids):
     script = []
     for i in range(len(video_ids)):
@@ -76,17 +79,53 @@ def get_transcript_from_vidids(video_ids):
     with open('sample_caption.txt',"w") as filehandle:
         for i in range(len(script)):
             for listitem in script[i]:
-                listitem = listitem.get('text').lower()+" "
-                listitem = re.sub('\[.*?\]','', listitem)
-                listitem = re.sub('\(.*?\)','', listitem)
-                listitem = re.sub('[%s]' % re.escape(string.punctuation), '', listitem)
-                listitem = re.sub('\w*\d\w','', listitem)
-                filehandle.write(listitem)
+                # removing punctuation and numbers and brackets
+                filehandle.write(listitem.get('text')+" ")
+                
+                # listitem = listitem.get('text').lower()+" "
+                # listitem = re.sub('\[.*?\]','', listitem)
+                # listitem = re.sub('\(.*?\)','', listitem)
+                # listitem = re.sub('[%s]' % re.escape(string.punctuation), '', listitem)
+                # listitem = re.sub('\w*\d\w','', listitem)
+                # listitem = re.sub('\d+', '', listitem)
+                
+                # # removing stop words
+                # word_tokens = listitem.split(' ')
+                # filtered_sentence = [w for w in word_tokens if not w in stopwords] 
+                # listitem = ""
+                # for each in filtered_sentence:
+                #     listitem += each + " "
+                    
+                #filehandle.write(listitem)
+            
+def clean_caption():
+    unclean_file = open('sample_caption.txt','r')
+    raw_text = unclean_file.read().lower()
+    raw_text = re.sub('\[.*?\]','', raw_text)
+    raw_text = re.sub('\(.*?\)','', raw_text)
+    raw_text = re.sub('[%s]' % re.escape(string.punctuation), '', raw_text)
+    raw_text = re.sub('\w*\d\w','', raw_text)
+    raw_text = re.sub('\d+', '', raw_text)
     
+    word_tokens = word_tokenize(raw_text)
+    stop_words = set(stopwords.words('english'))
+    filtered_sentence = [w for w in word_tokens if not w in stop_words]
 
+    fdist = FreqDist(filtered_sentence)
+    print(fdist.most_common(50))
+    
+    clean_file = open('clean_caption.txt', 'w')
+    for each in filtered_sentence:
+        clean_file.write(each + " ")
+    
+    unclean_file.close()
+    clean_file.close()
+
+    
 def main():
     vid_ids = get_vidids_from_channel("https://www.youtube.com/channel/UCbAwSkqJ1W_Eg7wr3cp5BUA")
     get_transcript_from_vidids(vid_ids)
+    clean_caption()
 #     get_vidids_from_channel("https://www.youtube.com/channel/UCG7RoGLCkUT7kauOBCRmVEg")
 #     get_vidids_from_channel("https://www.youtube.com/channel/UCGCVyTWogzQ4D170BLy2Arw")
 
