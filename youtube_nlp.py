@@ -8,6 +8,7 @@ import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
 import matplotlib.pyplot as plt
+import PySimpleGUI as sg
 
 from wordcloud import WordCloud, STOPWORDS
 from youtube_transcript_api import YouTubeTranscriptApi
@@ -154,9 +155,27 @@ def wordcloud():
     plt.tight_layout(pad=0)
     plt.show()
 
+def gui():
+    layout = [[sg.Text("Enter YouTube Channel Link: "), sg.InputText()], [sg.Button("Ok"), sg.Button('Cancel')]]
+
+    # Create the window
+    window = sg.Window("YouTube Playlist Analyzer", layout)
+
+    # Create an event loop
+    while True:
+        event, values = window.read()
+        # End program if user closes window or
+        # presses the OK button
+        if event == "Cancel" or event == sg.WIN_CLOSED:
+            break
+        else:
+            return(get_vidids_from_channel(values[0]))
+
+    #window.close()
     
 def main():
-    vid_ids = get_vidids_from_channel("https://www.youtube.com/channel/UCbAwSkqJ1W_Eg7wr3cp5BUA")
+    vid_ids = gui()
+    #vid_ids = get_vidids_from_channel("https://www.youtube.com/channel/UCbAwSkqJ1W_Eg7wr3cp5BUA")
     get_transcript_from_vidids(vid_ids)
     clean_caption()
     distribution()
