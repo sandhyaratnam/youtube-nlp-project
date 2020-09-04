@@ -7,43 +7,58 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-
-    <title class="text-center">YouTube Transcript Analyzer</title>
+    <title>YouTube Transcript Analyzer</title>
   </head>
   <body>
-    <h1 class="text-center">YouTube Transcript Analyzer</h1>
 
-    <h4 class="text-center"class="text-center"><span class="border border-info">
-      This program provides a full analysis of select YouTube channel by providing a wordcloud and bigrams of popular words used.
-    </span></h4>
+    <div class="cotainer">
+      <div class="card" style="width: 100%;">
+        <img src="banner-image.jpg" class="card-img-top" alt="banner photo of youtube">
+        <div class="card-img-overlay text-center d-flex h-100" style="color:#eaf2f8;">
+          <div class="container align-self-center">
+            <h2 class="card-title">YouTube Text Analyzer</h2>
+            <p class="card-text">How does your favorite YouTuber usually talk? Paste in their channel link to
+              understand their most common words and phrases.</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <h6 class="text-center">
-        To get a full analysis of a YouTube channel, you must authorize the service to have access to your account in order to make sure that
-        you are a valid user. This can be done by clicking the link below, and authorization code will be given to you. Enter this in below.
     <br><br>
-      https://link
-    <br>
-      </h6>
 
-    <form>
-      <div class="text-center" class="form-group">
-        <label class="text-center" for="authorizationCode">Enter Authorization Code: </label>
-        <input class="text-center" type="password" class="form-control" id="authorizationCode" placeholder="Authorization Code">
-        <div class="col-md text-center"> 
-            <button id="singlebutton" name="singlebutton" class="btn btn-primary">Submit</button> 
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <h6 class="text-center">
+              To get a full analysis of a YouTube channel, you must authorize the service to have access to your account in order to make sure that
+              you are a valid user. This can be done by clicking the link below, and authorization code will be given to you. Enter this in below.
+          <br><br>
+            https://link
+          <br>
+          </h6>
+          <form>
+            <div class="text-center" class="form-group">
+              <label class="text-center" for="authorizationCode">Enter Authorization Code: </label>
+              <input class="text-center" type="password" class="form-control" id="authorizationCode" placeholder="Authorization Code">
+              <div class="col-md text-center">
+                  <button id="singlebutton" name="singlebutton" class="btn btn-primary">Submit</button>
+              </div>
+          </form>
+
+          <form>
+            <br>
+            <div class="text-center" class="form-group">
+              <label class="text-center" for="YouTubeChannelLink">Enter YouTube Chanel Link: </label>
+              <input class="text-center" type="link" class="form-control" id="YouTubeChannelLink" placeholder="YouTube Channel Link">
+              <div class="col-md text-center">
+                  <button id="singlebutton" name="singlebutton" class="btn btn-primary">Submit</button>
+              </div>
+          </form>
         </div>
-    </form>
+      </div>
+    </div>
 
-    <form>
-      <br>
-      <div class="text-center" class="form-group">
-        <label class="text-center" for="YouTubeChannelLink">Enter YouTube Chanel Link: </label>
-        <input class="text-center" type="link" class="form-control" id="YouTubeChannelLink" placeholder="YouTube Channel Link">
-        <div class="col-md text-center"> 
-            <button id="singlebutton" name="singlebutton" class="btn btn-primary">Submit</button> 
-        </div>
-    </form>
-
+    <br><br><br>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -51,3 +66,4 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
   </body>
 </html>
+<!-- Color palette: https://www.color-hex.com/color-palette/28238 -->
